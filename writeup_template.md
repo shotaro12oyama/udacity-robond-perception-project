@@ -23,11 +23,11 @@
 
 In the callback function, named as pcl_callback(located No.50 line in the project_template.py), I implemented the folllowing steps.
 
-** Convert ROS message to PCL data by helper function (No.54 line in the project_template.py)
-** Remove Outlier point cloud data by PCL’s StatisticalOutlierRemoval filter, which computes the distance to all of its neighbors, and then calculates a mean distance. By assuming a Gaussian distribution, the points outside of an interval defined by the distances mean+standard deviation are considered to be outliers and removed.(No.56-66 lines in the project_template.py)
-** Downsample the point cloud data by Voxel Grid technique, with Leaf size at 0.01. (No.68-76 lines in the project_template.py)
-** Set Passthrough filter align with Z axis and the range min 0.6 - max 1.1.(No.78-89 lines in the project_template.py)
-** Use RANSAC segmentation with max distance = 0.03 to recognize each object and table separately. (No.91-100 lines in the project_template.py)
+* Convert ROS message to PCL data by helper function (No.54 line in the project_template.py)
+* Remove Outlier point cloud data by PCL’s StatisticalOutlierRemoval filter, which computes the distance to all of its neighbors, and then calculates a mean distance. By assuming a Gaussian distribution, the points outside of an interval defined by the distances mean+standard deviation are considered to be outliers and removed.(No.56-66 lines in the project_template.py)
+* Downsample the point cloud data by Voxel Grid technique, with Leaf size at 0.01. (No.68-76 lines in the project_template.py)
+* Set Passthrough filter align with Z axis and the range min 0.6 - max 1.1.(No.78-89 lines in the project_template.py)
+* Use RANSAC segmentation with max distance = 0.03 to recognize each object and table separately. (No.91-100 lines in the project_template.py)
 
 
 #### 2. Complete Exercise 2 steps: Pipeline including clustering for segmentation implemented.  
