@@ -21,8 +21,68 @@
 ### Exercise 1, 2 and 3 pipeline implemented
 #### 1. Complete Exercise 1 steps. Pipeline for filtering and RANSAC plane fitting implemented.
 
+In the callback function, named as pcl_callback(located No.50 line in the project_template.py), I implemented the folllowing steps.
+
+** Convert ROS message to PCL data by helper function (No.54 line in the project_template.py)
+** Remove Outlier point cloud data by PCL’s StatisticalOutlierRemoval filter, which computes the distance to all of its neighbors, and then calculates a mean distance. By assuming a Gaussian distribution, the points outside of an interval defined by the distances mean+standard deviation are considered to be outliers and removed.(No.56-66 lines in the project_template.py)
+** Downsample the point cloud data by Voxel Grid technique, with Leaf size at 0.01. (No.68-76 lines in the project_template.py)
+** Set Passthrough filter align with Z axis and the range min 0.6 - max 1.1.(No.78-89 lines in the project_template.py)
+** Use RANSAC segmentation with max distance = 0.03 to recognize each object and table separately. (No.91-100 lines in the project_template.py)
+
 
 #### 2. Complete Exercise 2 steps: Pipeline including clustering for segmentation implemented.  
+
+    # TODO: Extract inliers and outliers
+    # Call the segment function to obtain set of inlier indices and model coefficients
+    inliers, coefficients = seg.segment()
+    # Extract inliers
+    pcl_cloud_objects = cloud_filtered.extract(inliers, negative=True)
+    pcl_cloud_table = cloud_filtered.extract(inliers, negative=False)
+
+    # TODO: Euclidean Clustering
+    white_cloud = XYZRGB_to_XYZ(pcl_cloud_objects)
+    tree = white_cloud.make_kdtree()
+
+    # TODO: Create Cluster-Mask Point Cloud to visualize each cluster separately
+    # Create a cluster extraction object
+    ec = white_cloud.make_EuclideanClusterExtraction()
+    # Set tolerances for distance threshold
+    # as well as minimum and maximum cluster size (in points)
+    # NOTE: These are poor choices of clustering parameters
+    # Your task is to experiment and find values that work for segmenting objects.
+    ec.set_ClusterTolerance(0.015)
+    ec.set_MinClusterSize(200)
+    ec.set_MaxClusterSize(1500)
+    # Search the k-d tree for clusters
+    ec.set_SearchMethod(tree)
+    # Extract indices for each of the discovered clusters
+    cluster_indices = ec.Extract()
+
+    #Assign a color corresponding to each segmented object in scene
+    cluster_color = get_color_list(len(cluster_indices))
+
+    color_cluster_point_list = []
+
+    for j, indices in enumerate(cluster_indices):
+        for i, indice in enumerate(indices):
+            color_cluster_point_list.append([white_cloud[indice][0],
+                                            white_cloud[indice][1],
+                                            white_cloud[indice][2],
+                                            rgb_to_float(cluster_color[j])])
+
+    #Create new cloud containing all clusters each with unique color
+    cluster_cloud = pcl.PointCloud_PointXYZRGB()
+    cluster_cloud.from_list(color_cluster_point_list)
+
+    # TODO: Convert PCL data to ROS messages
+    ros_cloud_objects = pcl_to_ros(pcl_cloud_objects)
+    ros_cloud_table = pcl_to_ros(pcl_cloud_table)
+    ros_cluster_cloud = pcl_to_ros(cluster_cloud)
+
+    # TODO: Publish ROS messages
+    pcl_objects_pub.publish(ros_cloud_objects)
+    pcl_table_pub.publish(ros_cloud_table)
+    pcl_cluster_pub.publish(ros_cluster_cloud)
 
 
 #### 2. Complete Exercise 3 Steps.  Features extracted and SVM trained.  Object recognition implemented.
