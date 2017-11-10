@@ -38,7 +38,7 @@ In addition to the Exercise 1 steps, I implemented pipeline as follows.
 * Convert PCL data to ROS message and pubish. (No.144-152 lines in the project_template.py)
 
 
-![demo-1](https://user-images.githubusercontent.com/20687560/28748231-46b5b912-7467-11e7-8778-3095172b7b19.png)
+
 
 #### 2. Complete Exercise 3 Steps.  Features extracted and SVM trained.  Object recognition implemented.
 
@@ -47,6 +47,7 @@ In addition to the Exercise 1 & 2 steps, I implemented pipeline as follows.
 * Convert PCL cluster data to ROS by helper function, then extract color & normal histogram features. After concatenate those features, used for SVM training. With the trained model, predict each object and set the result as label.(No.157-188 lines in the project_template.py)
 * When training my SVM, I used HSV color, a
 
+![demo-1](./training_svm.png)
 
 ### Pick and Place Setup
 
