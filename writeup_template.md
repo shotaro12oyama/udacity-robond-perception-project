@@ -60,4 +60,4 @@ In addition to the Exercise 1 & 2 steps, I implemented pipeline as follows.
 It seemed that the centroids and pick place positions were calculated well, because the arm could reach the objects well, but picking and dropping object failed. From the course instruction, I should try to implement collision detection.
 
 
-
+![demo-2](./robo_marker.png)
