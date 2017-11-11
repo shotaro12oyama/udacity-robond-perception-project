@@ -45,7 +45,7 @@ In addition to the Exercise 1 steps, I implemented pipeline as follows.
 In addition to the Exercise 1 & 2 steps, I implemented pipeline as follows.
 
 * Convert PCL cluster data to ROS by helper function, then extract color & normal histogram features. After concatenate those features, used for SVM training. With the trained model, predict each object and set the result as label.(No.157-188 lines in the project_template.py)
-* When training my SVM, I used HSV color, a
+* When training my SVM, I used HSV color, and increased the number of times (5 -> 20) for training data generation. I kept using Linear kernel, and belive the result was good enough.
 
 ![demo-1](./training_svm.png)
 
